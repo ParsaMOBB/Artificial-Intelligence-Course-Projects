@@ -8,6 +8,9 @@ class PacmanGame:
         self.ghosts = deepcopy(ghosts)
         self.snacks = deepcopy(snacks)
         self.is_wall = is_wall
+        self.move_direction = move_direction if move_direction is not None else ""
+        self.height = len(is_wall)
+        self.width = len(is_wall[0]) if self.height > 0 else 0
 
     """
         It returns a pair of move_direction and information for dynamic objects of the game.
@@ -76,7 +79,6 @@ class PacmanGame:
     """
         Use this method (or any defined method by yourself) to explore next possible states of the game.
     """
-    # TODO
     def get_next_states(self):
         next_states = []
 
@@ -87,7 +89,61 @@ class PacmanGame:
             "R": (0, 1)
         }
 
+        px, py = self.player
+        
+        for direction, (dx, dy) in moves.items():
+            nx, ny = px + dx, py + dy
+            
+            if not self.is_valid(nx, ny):
+                continue
+            
+            # Create new game state
+            new_game = PacmanGame(player=(nx, ny), ghosts=self.ghosts, snacks=self.snacks, is_wall=self.is_wall, move_direction=direction)
+            
+            # Move ghosts
+            new_game.move_ghosts()
+            
+            # Check if we're eating a snack
+            target_snack = None
+            for snack in new_game.snacks:
+                if snack.x == nx and snack.y == ny and snack.exists:
+                    target_snack = snack
+                    break
+            
+            if target_snack:
+                target_snack.update_state(new_game.snacks)
+            
+            next_states.append((direction, new_game))
+        
         return next_states
+    
+    def move_ghosts(self):
+        """Move all ghosts according to their oscillation pattern"""
+        for ghost in self.ghosts:
+            next_x, next_y = ghost.get_next_position()
+            
+            # Check if ghost hits wall or goes out of bounds, or reached radius limit
+            center_x, center_y = ghost.center
+            
+            # Calculate distance from center
+            if ghost.is_horizontal():
+                distance_from_center = abs(next_y - center_y)
+            else:
+                distance_from_center = abs(next_x - center_x)
+            
+            # Check if the next position is valid and within radius
+            if not self.is_valid(next_x, next_y) or distance_from_center >= ghost.radius:
+                # Reverse direction
+                ghost.direction *= -1
+                # Get the position after reversing direction
+                next_x, next_y = ghost.get_next_position()
+            
+            ghost.x = next_x
+            ghost.y = next_y
+    
+    def get_ghost_positions(self):
+        """Return a set of all ghost positions"""
+        return {(ghost.x, ghost.y) for ghost in self.ghosts}
     
     """
         Use this method (or any defined method by yourself) to represent current state of the game.
@@ -95,3 +151,9 @@ class PacmanGame:
     # TODO
     def get_state(self):
         pass
+
+    """
+        It returns the list of snacks which are not eaten yet.
+    """
+    def get_none_eaten_snacks(self):
+        return [snack for snack in self.snacks if snack.exists]

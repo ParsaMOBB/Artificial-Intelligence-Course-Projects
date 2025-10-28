@@ -12,6 +12,6 @@ class Snack:
         Updates existence of snack in case of a collision with Pacman
     """
     def update_state(self, snacks):        
-        must_eaten_before = [s.get_state() for s in snacks if s.type < self.type]
+        must_eaten_before = [s.exists for s in snacks if s.type < self.type]
         if sum(must_eaten_before) == 0: 
             self.exists = False
