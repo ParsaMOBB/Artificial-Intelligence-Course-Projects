@@ -1,5 +1,4 @@
 from ..environment.game import PacmanGame
-from .dfs_solver import dfs
 from copy import deepcopy
 import time
 
