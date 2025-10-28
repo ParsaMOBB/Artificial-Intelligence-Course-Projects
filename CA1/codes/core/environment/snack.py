@@ -13,4 +13,5 @@ class Snack:
     """
     def update_state(self, snacks):        
         must_eaten_before = [s.get_state() for s in snacks if s.type < self.type]
-        self.exists = sum(must_eaten_before) > 0
+        if sum(must_eaten_before) == 0: 
+            self.exists = False
