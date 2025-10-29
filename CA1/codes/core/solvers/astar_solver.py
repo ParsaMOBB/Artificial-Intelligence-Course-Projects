@@ -1,6 +1,5 @@
-import heapq
 from ..environment.game import PacmanGame
-from .heuristics import *
+from .heuristics import snack_priority_heuristic
 from .weighted_astar_solver import weighted_astar_solver
 
 """
@@ -10,4 +9,4 @@ from .weighted_astar_solver import weighted_astar_solver
 """
 
 def astar_solver(game: PacmanGame, timeout=10):
-    pass
+    return weighted_astar_solver(game, heuristic_func=snack_priority_heuristic, weight=1, timeout=timeout)
