@@ -10,6 +10,7 @@ def dfs_solver(game: PacmanGame, timeout=10):
     start_time = time.time()
     game.set_time(0)
     initial_state = game.get_state()
+    initial_info = game.get_info()
 
     parents: Dict[str, Optional[Tuple[str, str]]] = {initial_state: None}
     state_to_game: Dict[str, PacmanGame] = {initial_state: game}
@@ -29,7 +30,7 @@ def dfs_solver(game: PacmanGame, timeout=10):
 
     while stack:
         if time.time() - start_time > timeout:
-            break
+            return [initial_info]
 
         current_state = stack.pop()
         current_game = state_to_game[current_state]

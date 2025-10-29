@@ -38,7 +38,7 @@ def ids_solver(game: PacmanGame, max_limit: int = 100000, timeout=10):
 
     for depth_limit in range(max_limit + 1):
         if time.time() - start_time > timeout:
-            return best_trace
+            return [initial_info]
 
         game.set_time(0)
         parents: Dict[str, Optional[Tuple[str, str]]] = {initial_state: None}
@@ -103,6 +103,6 @@ def ids_solver(game: PacmanGame, max_limit: int = 100000, timeout=10):
         best_trace = reconstruct(last_state, parents, state_to_game)
 
         if timeout_hit:
-            return best_trace
+            return [initial_info]
 
     return best_trace

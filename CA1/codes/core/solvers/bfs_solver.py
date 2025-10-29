@@ -11,6 +11,7 @@ def bfs_solver(game: PacmanGame, timeout=10):
     start_time = time.time()
     game.set_time(0)
     initial_state = game.get_state()
+    initial_info = game.get_info()
 
     visited: Dict[str, PacmanGame] = {initial_state: game}
     parents: Dict[str, Optional[Tuple[str, str]]] = {initial_state: None}
@@ -21,7 +22,7 @@ def bfs_solver(game: PacmanGame, timeout=10):
 
     while queue:
         if time.time() - start_time > timeout:
-            break
+            return [initial_info]
 
         current_state = queue.popleft()
         current_game = visited[current_state]

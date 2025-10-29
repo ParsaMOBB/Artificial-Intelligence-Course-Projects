@@ -9,10 +9,11 @@ from .heuristics import snack_priority_heuristic
     Use this method (or any defined method by yourself) to run Weighted A* algorithm on a given 'game' with a given 'heuristic and an weight.
     At the end, you must return the walked path represented as a list of moves by using use PacmanGame.get_info()
 """
-def weighted_astar_solver(game: PacmanGame, heuristic_func=snack_priority_heuristic, weight: int = 10, timeout=10):
+def weighted_astar_solver(game: PacmanGame, heuristic_func=snack_priority_heuristic, weight: int = 3, timeout=10):
     start_time = time.time()
     game.set_time(0)
     initial_state = game.get_state()
+    initial_info = game.get_info()
 
     parents: Dict[str, Optional[Tuple[str, str]]] = {initial_state: None}
     state_to_game: Dict[str, PacmanGame] = {initial_state: game}
@@ -48,7 +49,7 @@ def weighted_astar_solver(game: PacmanGame, heuristic_func=snack_priority_heuris
 
     while open_heap:
         if time.time() - start_time > timeout:
-            break
+            return [initial_info]
 
         _, _, current_state = heapq.heappop(open_heap)
         current_game = state_to_game[current_state]

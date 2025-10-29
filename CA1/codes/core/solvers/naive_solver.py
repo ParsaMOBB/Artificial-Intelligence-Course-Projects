@@ -21,7 +21,7 @@ def naive_solver(game: PacmanGame, timeout=10):
 
     while not game.is_goal():
         if time.time() - t0 > timeout:
-            return path if path else [game.get_info()]
+            return [path[0]] if path[0] else [game.get_info()]
         goal = game.determine_goal()
         non_eaten_snacks = game.get_none_eaten_snacks()
         target_snacks = [snack for snack in non_eaten_snacks if snack.type == goal]
