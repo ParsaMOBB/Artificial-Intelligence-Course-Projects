@@ -15,6 +15,7 @@ PLAYER_SPEED = 5
 P2G_SPEED = 1  # AI speed (moves/sec)
 GHOST_MOVE_LIMIT = 2 # Maximum number of cells a ghost can move
 PLAYER_SIZE, FRUIT_SIZE, GHOST_SIZE = 40, 50, 40
+MUSIC_VOLUME = 0.4
 
 BLACK  = (0, 0, 0)
 WHITE  = (255, 255, 255)

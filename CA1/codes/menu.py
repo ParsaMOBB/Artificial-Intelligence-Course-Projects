@@ -158,6 +158,53 @@ class Dropdown:
             txt = self.font.render(self.options[idx], True, color)
             surface.blit(txt, (item_rect.x + 8, item_rect.y + (item_rect.h - txt.get_height()) // 2))
 
+class MuteButton:
+    _sound_image = None
+    _mute_image = None
+
+    def __init__(self, x, y, size, bg_color=WHITE, border_color=YELLOW):
+        self.rect = pygame.Rect(x, y, size, size)
+        self.bg_color = bg_color
+        self.border_color = border_color
+        self.is_muted = pygame.mixer.music.get_volume() == 0
+        self.hover = False
+        self._icon_size = int(size * 0.7)
+        sound_img, mute_img = self._load_images()
+        self._sound_icon = pygame.transform.smoothscale(sound_img, (self._icon_size, self._icon_size))
+        self._mute_icon = pygame.transform.smoothscale(mute_img, (self._icon_size, self._icon_size))
+
+    @classmethod
+    def _load_images(cls):
+        if cls._sound_image is None or cls._mute_image is None:
+            sound_path = os.path.join("assets", "Sound", "sound.png")
+            mute_path = os.path.join("assets", "Sound", "mute.png")
+            cls._sound_image = pygame.image.load(sound_path).convert_alpha()
+            cls._mute_image = pygame.image.load(mute_path).convert_alpha()
+        return cls._sound_image, cls._mute_image
+
+    def toggle(self):
+        self.is_muted = not self.is_muted
+        pygame.mixer.music.set_volume(0 if self.is_muted else MUSIC_VOLUME)
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEMOTION:
+            self.hover = self.rect.collidepoint(event.pos)
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self.rect.collidepoint(event.pos):
+                self.toggle()
+                return True
+        return False
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, self.bg_color, self.rect, border_radius=8)
+        border_col = RED if self.is_muted else self.border_color
+        width = 3 if self.hover else 2
+        pygame.draw.rect(surface, border_col, self.rect, width=width, border_radius=8)
+
+        icon = self._mute_icon if self.is_muted else self._sound_icon
+        icon_rect = icon.get_rect(center=self.rect.center)
+        surface.blit(icon, icon_rect)
+
 def natural_sort_key(s):
     """Sort strings like map1.txt, map2.txt, map10.txt in human order."""
     return [int(text) if text.isdigit() else text.lower() for text in re.split(r'(\d+)', s)]
@@ -273,7 +320,10 @@ def main_menu(screen, clock, font):
     map_files.sort(key=natural_sort_key)
 
     solver_dd = Dropdown(center_x - dd_width // 2, 170, dd_width, dd_height, menu_font, solver_options, selected_index=0)
-    map_dd = Dropdown(center_x - dd_width // 2, 170 + spacing, dd_width, dd_height, menu_font, map_files, selected_index=0)
+    map_dd = Dropdown(center_x - dd_width // 2, 170 + spacing, dd_width, dd_height, menu_font, map_files, selected_index=0, max_visible=6)
+    mute_size = 56
+    mute_padding = 30
+    mute_btn = MuteButton(screen.get_width() - mute_size - mute_padding, mute_padding, mute_size)
 
     while running:
         screen.blit(background, (0, 0))
@@ -296,9 +346,13 @@ def main_menu(screen, clock, font):
         hint = menu_font.render("Press ENTER to Start", True, YELLOW)
         screen.blit(hint, (center_x - hint.get_width() // 2, screen.get_height() - 80))
 
+        mute_caption = menu_font.render("Music", True, WHITE)
+        screen.blit(mute_caption, (mute_btn.rect.centerx - mute_caption.get_width() // 2, mute_btn.rect.bottom + 10))
+
         # draw dropdown boxes first
         solver_dd.draw_box(screen)
         map_dd.draw_box(screen)
+        mute_btn.draw(screen)
 
         # draw lists with correct z-order: draw non-focused first, focused last
         # if both open (rare), prioritize the one that was interacted (handled below)
@@ -318,6 +372,7 @@ def main_menu(screen, clock, font):
             # pass to dropdowns first
             solver_changed = solver_dd.handle_event(event)
             map_changed = map_dd.handle_event(event)
+            mute_btn.handle_event(event)
 
             # auto-close the other dropdown if one is opened via click
             if event.type == pygame.MOUSEBUTTONDOWN and event.button in (1,):
@@ -333,7 +388,9 @@ def main_menu(screen, clock, font):
                     player_speed = max(1, player_speed - 1)
                 elif event.key in (pygame.K_d, pygame.K_RIGHT):
                     player_speed = min(PLAYER_MODE_FPS, player_speed + 1)
+                elif event.key == pygame.K_m:
+                    mute_btn.toggle()
                 elif event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
                     selected_mode = solver_dd.value
                     selected_map = os.path.join(map_folder, map_dd.value)
-                    return selected_mode, player_speed, selected_map
+                    return selected_mode, player_speed, selected_map, mute_btn.is_muted

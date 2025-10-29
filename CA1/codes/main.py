@@ -146,7 +146,7 @@ def main():
     
     pygame.mixer.init()
     pygame.mixer.music.load("assets/Music/17. Game Play.mp3")
-    pygame.mixer.music.set_volume(0.4)  # Adjust volume (0.0 - 1.0)
+    pygame.mixer.music.set_volume(MUSIC_VOLUME)  # Adjust volume (0.0 - 1.0)
     pygame.mixer.music.play(-1)  # -1 means loop forever
 
     clock = pygame.time.Clock()
@@ -173,9 +173,10 @@ def main():
     ]
 
     """
-        menu returns the selected mode (Player, BFS , ...), player_speed and the path of map.
+        menu returns the selected mode (Player, BFS , ...), player_speed, map path, and mute state.
     """
-    mode, player_speed, map_path = main_menu(screen, clock, font)
+    mode, player_speed, map_path, music_muted = main_menu(screen, clock, font)
+    pygame.mixer.music.set_volume(0 if music_muted else MUSIC_VOLUME)
 
     def setup_game(map_path):
         """
