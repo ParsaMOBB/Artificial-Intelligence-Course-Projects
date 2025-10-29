@@ -2,6 +2,7 @@ from copy import deepcopy
 from .ghost import Ghost
 from .snack import Snack
 
+TIME_MOD = 24
 class PacmanGame:
     def __init__(self, player : tuple[int, int], ghosts : list[Ghost], snacks : list[Snack], is_wall, move_direction = None):
         self.player = player
@@ -11,6 +12,8 @@ class PacmanGame:
         self.move_direction = move_direction if move_direction is not None else ""
         self.height = len(is_wall)
         self.width = len(is_wall[0]) if self.height > 0 else 0
+        self.time = 0
+        self.time_mod = TIME_MOD
 
     """
         It returns a pair of move_direction and information for dynamic objects of the game.
@@ -148,12 +151,29 @@ class PacmanGame:
     """
         Use this method (or any defined method by yourself) to represent current state of the game.
     """
-    # TODO
     def get_state(self):
-        pass
+        # Player position
+        px, py = self.player
+        # Non-eaten snacks positions (sorted for determinism)
+        remaining_snacks = sorted((snack.x, snack.y) for snack in self.snacks if snack.exists)
+        snacks_str = ";".join(f"{x},{y}" for x, y in remaining_snacks)
+        # Time modulo time_mod uniquely determines ghost positions
+        t = self.time % self.time_mod
+
+        return f"P:{px},{py}|S:[{snacks_str}]|T:{t}"
 
     """
         It returns the list of snacks which are not eaten yet.
     """
     def get_none_eaten_snacks(self):
         return [snack for snack in self.snacks if snack.exists]
+
+    def set_time(self, time):
+        self.time = time % self.time_mod
+
+    def get_time(self):
+        return self.time
+    
+    def increment_time(self):
+        self.time += 1
+        self.time %= self.time_mod
