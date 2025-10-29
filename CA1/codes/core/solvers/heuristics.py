@@ -31,3 +31,9 @@ def snack_priority_heuristic(game: PacmanGame) -> int:
         return max(manhattan_distance((px, py), strawberry) for strawberry in strawberries)
 
     return 0
+
+
+def remaining_fruits_heuristic(game: PacmanGame) -> int:
+    if game.is_goal():
+        return 0
+    return sum(1 for snack in game.snacks if snack.exists)
