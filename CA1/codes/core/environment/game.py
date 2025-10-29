@@ -134,13 +134,11 @@ class PacmanGame:
             else:
                 distance_from_center = abs(next_x - center_x)
             
-            # Check if the next position is valid and within radius
-            if not self.is_valid(next_x, next_y) or distance_from_center >= ghost.radius:
-                # Reverse direction
+            # If invalid or exceeding radius, reverse
+            if not self.is_valid(next_x, next_y) or distance_from_center > ghost.radius:
                 ghost.direction *= -1
-                # Get the position after reversing direction
-                next_x, next_y = ghost.get_next_position()
             
+            next_x, next_y = ghost.get_next_position()
             ghost.x = next_x
             ghost.y = next_y
     

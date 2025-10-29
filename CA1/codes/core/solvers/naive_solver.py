@@ -58,10 +58,13 @@ def find_path_to_target(game: PacmanGame, target_snack):
         "R": (0, 1)
     }
     
-    # Each ghost has a period of 2*radius movements
-    # Calculate LCM of all ghost periods (for simplicity, use max period * 2)
-    max_period = max([2 * ghost.radius + 1 for ghost in game.ghosts], default=4)
-    period = int(__import__("math").lcm(*range(1, max_period + 1)))
+    # A conservative period to bound visited states; fallback to fixed cap
+    # Note: exact period isn't critical for correctness here
+    max_period = max([2 * ghost.radius + 1 for ghost in game.ghosts], default=8)
+    try:
+        period = int(__import__("math").lcm(*range(1, max_period + 1)))
+    except Exception:
+        period = 24
     
     queue = deque()
     queue.append((px, py, 0, []))  # (x, y, time, path)
@@ -88,20 +91,27 @@ def find_path_to_target(game: PacmanGame, target_snack):
             if not game.is_valid(nx, ny):
                 continue
             
-            # Simulate this move to get ghost positions at time next_time
-            test_game = PacmanGame(player=(nx, ny), ghosts=game.ghosts, 
-                                  snacks=game.snacks, is_wall=game.is_wall, 
+            # Simulate ghosts at time t and t+1 to prevent pass-through/swap collisions
+            sim_game = PacmanGame(player=(x, y), ghosts=game.ghosts,
+                                  snacks=game.snacks, is_wall=game.is_wall,
                                   move_direction=direction)
-            
-            # Simulate ghost movements for next_time steps
-            for _ in range(next_time):
-                test_game.move_ghosts()
-            
-            ghost_positions = test_game.get_ghost_positions()
-            
-            # Don't move to a position where a ghost will be
-            if (nx, ny) not in ghost_positions:
-                queue.append((nx, ny, next_time, path + [direction]))
+            # advance to time t
+            for _ in range(t):
+                sim_game.move_ghosts()
+            ghosts_t = sim_game.get_ghost_positions()
+            # advance to time t+1
+            sim_game.move_ghosts()
+            ghosts_t1 = sim_game.get_ghost_positions()
+
+            # Collision rules:
+            # 1) Direct collision: player's next cell occupied at t+1 by any ghost
+            if (nx, ny) in ghosts_t1:
+                continue
+            # 2) Swap collision: a ghost at (nx, ny) at t moves to (x, y) at t+1 while player moves x,y->nx,ny
+            if (nx, ny) in ghosts_t and (x, y) in ghosts_t1:
+                continue
+
+            queue.append((nx, ny, next_time, path + [direction]))
     
     return []  # No path found
 
