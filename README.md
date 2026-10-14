@@ -47,12 +47,7 @@ Reports are written in Persian.
 
 ## CA1 · Pac-Man, Solved Six Ways
 
-<img src="https://img.shields.io/badge/BFS-FFB300?style=flat-square" />
-<img src="https://img.shields.io/badge/DFS-FFB300?style=flat-square" />
-<img src="https://img.shields.io/badge/IDS-FFB300?style=flat-square" />
-<img src="https://img.shields.io/badge/A*-FFB300?style=flat-square" />
-<img src="https://img.shields.io/badge/Weighted%20A*-FFB300?style=flat-square" />
-<img src="https://img.shields.io/badge/pygame-6CA74A?style=flat-square" />
+<p><img src="https://img.shields.io/badge/BFS-FFB300?style=flat-square" /> <img src="https://img.shields.io/badge/DFS-FFB300?style=flat-square" /> <img src="https://img.shields.io/badge/IDS-FFB300?style=flat-square" /> <img src="https://img.shields.io/badge/A*-FFB300?style=flat-square" /> <img src="https://img.shields.io/badge/Weighted%20A*-FFB300?style=flat-square" /> <img src="https://img.shields.io/badge/pygame-6CA74A?style=flat-square" /></p>
 
 > Pac-Man must eat every snack on the board. Ghosts oscillate along fixed horizontal or vertical
 > tracks, apples must be eaten before strawberries, and touching a ghost — or swapping places with
@@ -93,10 +88,7 @@ shrinks dramatically and correctness is restored.
 
 ## CA2 · Evolution and Adversaries
 
-<img src="https://img.shields.io/badge/Genetic%20Algorithm-8B5CF6?style=flat-square" />
-<img src="https://img.shields.io/badge/Minimax-8B5CF6?style=flat-square" />
-<img src="https://img.shields.io/badge/Alpha%E2%80%93Beta%20Pruning-8B5CF6?style=flat-square" />
-<img src="https://img.shields.io/badge/Tkinter-8B5CF6?style=flat-square" />
+<p><img src="https://img.shields.io/badge/Genetic%20Algorithm-8B5CF6?style=flat-square" /> <img src="https://img.shields.io/badge/Minimax-8B5CF6?style=flat-square" /> <img src="https://img.shields.io/badge/Alpha%E2%80%93Beta%20Pruning-8B5CF6?style=flat-square" /> <img src="https://img.shields.io/badge/Tkinter-8B5CF6?style=flat-square" /></p>
 
 ### Part 1 — Putting a shredded image back together
 
@@ -153,11 +145,7 @@ step-through AI-vs-AI replay viewer.
 
 ## CA3 · Learning from Labels
 
-<img src="https://img.shields.io/badge/Decision%20Trees-10B981?style=flat-square" />
-<img src="https://img.shields.io/badge/Naive%20Bayes-10B981?style=flat-square" />
-<img src="https://img.shields.io/badge/Random%20Forest-10B981?style=flat-square" />
-<img src="https://img.shields.io/badge/AdaBoost-10B981?style=flat-square" />
-<img src="https://img.shields.io/badge/XGBoost-137CBD?style=flat-square" />
+<p><img src="https://img.shields.io/badge/Decision%20Trees-10B981?style=flat-square" /> <img src="https://img.shields.io/badge/Naive%20Bayes-10B981?style=flat-square" /> <img src="https://img.shields.io/badge/Random%20Forest-10B981?style=flat-square" /> <img src="https://img.shields.io/badge/AdaBoost-10B981?style=flat-square" /> <img src="https://img.shields.io/badge/XGBoost-137CBD?style=flat-square" /></p>
 
 Four supervised problems, each chosen to expose a different failure mode.
 
@@ -204,10 +192,7 @@ bagging vs. boosting · hyper-parameter search · bias–variance decomposition.
 
 ## CA4 · Tensors, Gradients, and a Text CNN
 
-<img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" />
-<img src="https://img.shields.io/badge/fastText-0064D2?style=flat-square" />
-<img src="https://img.shields.io/badge/CNN-EE4C2C?style=flat-square" />
-<img src="https://img.shields.io/badge/Persian%20NLP-EE4C2C?style=flat-square" />
+<p><img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" /> <img src="https://img.shields.io/badge/fastText-0064D2?style=flat-square" /> <img src="https://img.shields.io/badge/CNN-EE4C2C?style=flat-square" /> <img src="https://img.shields.io/badge/Persian%20NLP-EE4C2C?style=flat-square" /></p>
 
 > First build the machinery — tensors, autograd, modules, a training loop — then point it at a real
 > problem: 70k Persian food-delivery reviews that need to be sorted into happy and unhappy.
@@ -242,11 +227,7 @@ layer · convolution as an n-gram detector · padding, pooling, and dropout.
 
 ## CA5 · Structure Without Labels
 
-<img src="https://img.shields.io/badge/Sentence%20Embeddings-3B82F6?style=flat-square" />
-<img src="https://img.shields.io/badge/K--Means-3B82F6?style=flat-square" />
-<img src="https://img.shields.io/badge/DBSCAN-3B82F6?style=flat-square" />
-<img src="https://img.shields.io/badge/Hierarchical-3B82F6?style=flat-square" />
-<img src="https://img.shields.io/badge/PCA%20%C2%B7%20t--SNE-3B82F6?style=flat-square" />
+<p><img src="https://img.shields.io/badge/Sentence%20Embeddings-3B82F6?style=flat-square" /> <img src="https://img.shields.io/badge/K--Means-3B82F6?style=flat-square" /> <img src="https://img.shields.io/badge/DBSCAN-3B82F6?style=flat-square" /> <img src="https://img.shields.io/badge/Hierarchical-3B82F6?style=flat-square" /> <img src="https://img.shields.io/badge/PCA%20%C2%B7%20t--SNE-3B82F6?style=flat-square" /></p>
 
 > 2,732 Amazon food reviews, no labels, no categories. Find the groups that are actually in there —
 > and then argue, with metrics, that they are real.
